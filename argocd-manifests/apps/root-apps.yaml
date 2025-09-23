@@ -6,7 +6,7 @@ metadata:
 spec:
   project: default
   source:
-    repoURL: file:///C:/Projexts/Space/argocd-learn/argocd-manifests/
+    repoURL: https://github.com/azhe403/argocd-learn.git
     path: apps/nodejs
     targetRevision: HEAD
   destination:
