@@ -13,9 +13,11 @@ spec:
       labels:
         app: nodejs-app
     spec:
+      imagePullSecrets:
+      - name: ghcr-secret
       containers:
       - name: nodejs-app
-        image: nodejs-argocd:latest   # image lokal (Docker Desktop)
+        image: ghcr.io/azhe403/nodejs-argocd:latest
         imagePullPolicy: IfNotPresent
         ports:
         - containerPort: 3000
