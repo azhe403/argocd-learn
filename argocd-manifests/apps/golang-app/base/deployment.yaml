@@ -1,0 +1,21 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: golang-app
+spec:
+  selector:
+    matchLabels:
+      app: golang-app
+  template:
+    metadata:
+      labels:
+        app: golang-app
+    spec:
+      imagePullSecrets:
+      - name: ghcr-secret
+      containers:
+      - name: golang-app
+        image: ghcr.io/azhe403/golang-argocd:latest
+        imagePullPolicy: Always
+        ports:
+        - containerPort: 3000
