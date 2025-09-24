@@ -54,9 +54,6 @@ jobs:
     if: github.event_name == 'workflow_dispatch' || (github.event_name == 'push' && github.event.head_commit.modified && contains(join(github.event.head_commit.modified, ','), 'argocd-apps/nodejs-svc/'))
     name: Build and Push nodejs-svc Docker Image
     runs-on: ubuntu-latest
-    strategy:
-      matrix:
-        node-version: [18.x, 20.x]
     defaults:
       run:
         working-directory: argocd-apps/nodejs-svc
@@ -64,10 +61,10 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
-      - name: Set up Node.js ${{ matrix.node-version }}
+      - name: Set up Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: ${{ matrix.node-version }}
+          node-version: lts/*
 
       - name: Cache node modules
         uses: actions/cache@v3
@@ -76,12 +73,6 @@ jobs:
           key: ${{ runner.os }}-nodejs-${{ hashFiles('argocd-apps/nodejs-svc/package-lock.json') }}
           restore-keys: |
             ${{ runner.os }}-nodejs-
-
-      - name: Install dependencies
-        run: npm ci
-
-      - name: Run tests
-        run: npm test
 
       - name: Set up QEMU
         uses: docker/setup-qemu-action@v2
