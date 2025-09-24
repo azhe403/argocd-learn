@@ -3,6 +3,7 @@ name: Build and publish Docker image
 on:
   push:
     branches: [ main ]
+  workflow_dispatch:
 
 permissions:
   contents: write
@@ -12,7 +13,7 @@ jobs:
   # ...existing code...
 
   build-golang:
-    if: github.event_name == 'push' && (github.event.head_commit.modified && contains(join(github.event.head_commit.modified, ','), 'argocd-apps/golang-svc/'))
+    if: github.event_name == 'workflow_dispatch' || (github.event_name == 'push' && github.event.head_commit.modified && contains(join(github.event.head_commit.modified, ','), 'argocd-apps/golang-svc/'))
     runs-on: ubuntu-latest
     env:
       IMAGE_NAME: ghcr.io/${{ github.repository_owner }}/golang-argocd
@@ -50,7 +51,7 @@ jobs:
         echo "${{ env.IMAGE_NAME }}:latest"
 
   nodejs-build:
-    if: github.event_name == 'push' && (github.event.head_commit.modified && contains(join(github.event.head_commit.modified, ','), 'argocd-apps/nodejs-svc/'))
+    if: github.event_name == 'workflow_dispatch' || (github.event_name == 'push' && github.event.head_commit.modified && contains(join(github.event.head_commit.modified, ','), 'argocd-apps/nodejs-svc/'))
     name: Build and Push nodejs-svc Docker Image
     runs-on: ubuntu-latest
     strategy:
