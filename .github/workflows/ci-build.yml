@@ -13,7 +13,7 @@ jobs:
 
   golang-svc-build:
     name: golang-svc-build
-    if: github.event_name == 'workflow_dispatch' || (github.event_name == 'push' && github.event.head_commit.modified && contains(join(github.event.head_commit.modified, ','), 'argocd-apps/golang-svc/'))
+    if: github.event_name == 'workflow_dispatch' || (github.event_name == 'push' && github.event.head_commit.modified && contains(join(github.event.head_commit.modified, ','), 'apps/golang-svc/'))
     runs-on: ubuntu-latest
     env:
       IMAGE_NAME: ghcr.io/${{ github.repository_owner }}/golang-argocd-svc
@@ -52,7 +52,7 @@ jobs:
 
   nodejs-svc-build:
     name: nodejs-svc-build
-    if: github.event_name == 'workflow_dispatch' || (github.event_name == 'push' && github.event.head_commit.modified && contains(join(github.event.head_commit.modified, ','), 'argocd-apps/nodejs-svc/'))
+    if: github.event_name == 'workflow_dispatch' || (github.event_name == 'push' && github.event.head_commit.modified && contains(join(github.event.head_commit.modified, ','), 'apps/nodejs-svc/'))
     runs-on: ubuntu-latest
     env:
       IMAGE_NAME: ghcr.io/${{ github.repository_owner }}/nodejs-argocd-svc
