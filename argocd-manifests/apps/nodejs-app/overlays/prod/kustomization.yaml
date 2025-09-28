@@ -1,12 +1,138 @@
 apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 
-namespace: argocd
+metadata:
+  name: nodejs-app-production
+  annotations:
+    environment: production
+    config.kubernetes.io/local-config: "true"
+    security.scan/date: "$(date +%Y-%m-%d)"
+    security.compliance: "required"
+
+# Common labels for all resources in production
+commonLabels:
+  environment: production
+  app.kubernetes.io/environment: production
+  app.kubernetes.io/instance: nodejs-app-prod
+
+# Common annotations for production environment
+commonAnnotations:
+  app.kubernetes.io/environment: production
+  environment.description: "Production environment for nodejs-app"
+  security.compliance/level: "high"
+  monitoring.enabled: "true"
+  backup.enabled: "true"
+
+# Name prefix for all resources
 namePrefix: prod-
 
+# Namespace for all resources
+namespace: argocd-learn
+
+# Inherit from base
 resources:
 - ../../base
-- ingress.yaml
+# Removed ingress.yaml to avoid conflict with base ingress
 
+# Patches for environment-specific configurations
 patches:
 - path: replicas-patch.yaml
+
+# Production environment ConfigMap generator
+configMapGenerator:
+- name: nodejs-app-config
+  behavior: merge
+  literals:
+    - ENVIRONMENT=production
+    - LOG_LEVEL=info
+    - DEBUG_MODE=false
+    - NODE_ENV=production
+
+# Secret generator for production secrets
+secretGenerator:
+- name: nodejs-app-prod-secrets
+  behavior: create
+  literals:
+    - database-url=postgresql://prod-user:CHANGE_THIS_PASSWORD@prod-db:5432/nodejs_app
+    - redis-url=redis://prod-redis:6379
+    - session-secret=CHANGE_THIS_SECRET_KEY
+  type: Opaque
+
+# Image overrides for production environment with security features
+images:
+- name: ghcr.io/azhe403/nodejs-argocd
+  newTag: v1.0.0
+  digest: ""  # Use specific digest for production: sha256:...
+
+# Production-grade resource limits and requests
+patchesJson6902:
+- target:
+    group: apps
+    version: v1
+    kind: Deployment
+    name: prod-nodejs-app
+  patch: |-
+    - op: add
+      path: /spec/replicas
+      value: 3
+    - op: add
+      path: /spec/strategy
+      value:
+        type: RollingUpdate
+        rollingUpdate:
+          maxSurge: 1
+          maxUnavailable: 0
+    - op: add
+      path: /spec/template/spec/containers/0/resources
+      value:
+        requests:
+          cpu: 200m
+          memory: 256Mi
+        limits:
+          cpu: 500m
+          memory: 512Mi
+    - op: add
+      path: /spec/template/spec/containers/0/envFrom
+      value:
+      - configMapRef:
+          name: prod-nodejs-app-prod-config
+      - secretRef:
+          name: prod-nodejs-app-prod-secrets
+    - op: add
+      path: /spec/template/spec/containers/0/livenessProbe
+      value:
+        httpGet:
+          path: /healthz
+          port: 3000
+          scheme: HTTPS
+        initialDelaySeconds: 30
+        periodSeconds: 10
+        timeoutSeconds: 5
+        failureThreshold: 3
+    - op: add
+      path: /spec/template/spec/containers/0/readinessProbe
+      value:
+        httpGet:
+          path: /ready
+          port: 3000
+          scheme: HTTPS
+        initialDelaySeconds: 5
+        periodSeconds: 5
+        timeoutSeconds: 3
+        failureThreshold: 3
+    - op: add
+      path: /spec/template/spec/securityContext
+      value:
+        runAsNonRoot: true
+        runAsUser: 1000
+        fsGroup: 2000
+    - op: add
+      path: /spec/template/spec/containers/0/securityContext
+      value:
+        allowPrivilegeEscalation: false
+        readOnlyRootFilesystem: true
+        runAsNonRoot: true
+        runAsUser: 1000
+        capabilities:
+          drop:
+          - ALL

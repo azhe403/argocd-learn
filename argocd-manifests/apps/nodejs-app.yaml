@@ -1,18 +1,21 @@
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: root-application
+  name: nodejs-app
   namespace: argocd-learn
   finalizers:
     - resources-finalizer.argocd.argoproj.io
+  labels:
+    app.kubernetes.io/name: nodejs-app
+    app.kubernetes.io/instance: nodejs-app
+    app.kubernetes.io/part-of: argocd-learn
 spec:
   project: default
   source:
     repoURL: https://github.com/azhe403/argocd-learn.git
     targetRevision: HEAD
-    path: argocd-manifests/apps
-    directory:
-      include: '*.yaml'
+    path: argocd-manifests/apps/nodejs-app/overlays/prod
+    kustomize: {}
   destination:
     server: https://kubernetes.default.svc
     namespace: argocd-learn
@@ -25,3 +28,11 @@ spec:
       - CreateNamespace=true
       - ServerSideApply=true
       - ApplyOutOfSyncOnly=true
+  ignoreDifferences:
+    - group: apps
+      kind: Deployment
+      name: nodejs-app
+      namespace: argocd-learn
+      jsonPointers:
+        - /spec/replicas
+        - /spec/template/spec/containers/0/image

@@ -1,6 +1,33 @@
 apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 
+metadata:
+  name: nodejs-app-base
+  annotations:
+    config.kubernetes.io/local-config: "true"
+
+
+# Common annotations applied to all resources
+commonAnnotations:
+  app.kubernetes.io/version: "1.0.0"
+  app.kubernetes.io/created-by: "kustomize"
+
+namespace: argocd-learn
+
 resources:
 - deployment.yaml
 - service.yaml
+
+# Generate ConfigMap with application configuration
+configMapGenerator:
+- name: nodejs-app-config
+  behavior: create
+  literals:
+    - APP_NAME=nodejs-app
+    - APP_VERSION=1.0.0
+    - ENVIRONMENT=base
+
+# Images can be overridden in overlays
+images:
+- name: ghcr.io/azhe403/nodejs-argocd
+  newTag: latest

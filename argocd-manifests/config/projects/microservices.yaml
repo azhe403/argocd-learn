@@ -2,13 +2,13 @@ apiVersion: argoproj.io/v1alpha1
 kind: AppProject
 metadata:
   name: microservices
-  namespace: argocd
+  namespace: argocd-learn
 spec:
   description: Microservices applications project
   sourceRepos:
   - '*'
   destinations:
-  - namespace: argocd
+  - namespace: argocd-learn
     server: https://kubernetes.default.svc
   clusterResourceWhitelist:
   - group: '*'

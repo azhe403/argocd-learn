@@ -37,8 +37,8 @@ jobs:
     - name: Build and push image
       uses: docker/build-push-action@v4
       with:
-        context: ./argocd-apps/golang-svc
-        file: ./argocd-apps/golang-svc/Dockerfile
+        context: ./apps/golang-svc
+        file: ./apps/golang-svc/Dockerfile
         push: true
         tags: |
           ${{ env.IMAGE_NAME }}:${{ github.sha }}
@@ -58,7 +58,7 @@ jobs:
       IMAGE_NAME: ghcr.io/${{ github.repository_owner }}/nodejs-argocd-svc
     defaults:
       run:
-        working-directory: argocd-apps/nodejs-svc
+        working-directory: apps/nodejs-svc
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
@@ -71,8 +71,8 @@ jobs:
       - name: Cache node modules
         uses: actions/cache@v3
         with:
-          path: argocd-apps/nodejs-svc/node_modules
-          key: ${{ runner.os }}-nodejs-${{ hashFiles('argocd-apps/nodejs-svc/package-lock.json') }}
+          path: apps/nodejs-svc/node_modules
+          key: ${{ runner.os }}-nodejs-${{ hashFiles('apps/nodejs-svc/package-lock.json') }}
           restore-keys: |
             ${{ runner.os }}-nodejs-
 
@@ -92,8 +92,8 @@ jobs:
       - name: Build and push image
         uses: docker/build-push-action@v4
         with:
-          context: ./argocd-apps/nodejs-svc
-          file: ./argocd-apps/nodejs-svc/Dockerfile
+          context: ./apps/nodejs-svc
+          file: ./apps/nodejs-svc/Dockerfile
           push: true
           tags: |
             ${{ env.IMAGE_NAME }}:${{ github.sha }}
