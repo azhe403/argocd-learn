@@ -15,7 +15,7 @@ spec:
       - name: ghcr-secret
       containers:
       - name: golang-app
-        image: ghcr.io/azhe403/golang-argocd:latest
+        image: ghcr.io/azhe403/golang-argocd-svc:latest
         imagePullPolicy: Always
         ports:
         - containerPort: 3000

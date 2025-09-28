@@ -1,13 +1,13 @@
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: nodejs-app
+  name: nodejs-app-prod
   namespace: argocd-learn
   finalizers:
     - resources-finalizer.argocd.argoproj.io
   labels:
     app.kubernetes.io/name: nodejs-app
-    app.kubernetes.io/instance: nodejs-app
+    app.kubernetes.io/instance: nodejs-app-prod
     app.kubernetes.io/part-of: argocd-learn
 spec:
   project: default
@@ -31,7 +31,7 @@ spec:
   ignoreDifferences:
     - group: apps
       kind: Deployment
-      name: nodejs-app
+      name: prod-nodejs-app
       namespace: argocd-learn
       jsonPointers:
         - /spec/replicas

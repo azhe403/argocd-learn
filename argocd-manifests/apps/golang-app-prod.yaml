@@ -1,13 +1,13 @@
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: golang-app
+  name: golang-app-prod
   namespace: argocd-learn
   finalizers:
     - resources-finalizer.argocd.argoproj.io
   labels:
     app.kubernetes.io/name: golang-app
-    app.kubernetes.io/instance: golang-app
+    app.kubernetes.io/instance: golang-app-prod
     app.kubernetes.io/part-of: argocd-learn
 spec:
   project: default
@@ -31,7 +31,7 @@ spec:
   ignoreDifferences:
     - group: apps
       kind: Deployment
-      name: golang-app
+      name: prod-golang-app
       namespace: argocd-learn
       jsonPointers:
         - /spec/replicas

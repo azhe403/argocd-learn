@@ -15,7 +15,7 @@ spec:
       - name: ghcr-secret
       containers:
       - name: nodejs-app
-        image: ghcr.io/azhe403/nodejs-argocd:latest
+        image: ghcr.io/azhe403/nodejs-argocd-svc:latest
         imagePullPolicy: IfNotPresent
         ports:
         - containerPort: 3000

@@ -40,8 +40,8 @@ configMapGenerator:
 
 # Image overrides for dev environment
 images:
-- name: ghcr.io/azhe403/nodejs-argocd
-  newTag: dev-latest
+- name: ghcr.io/azhe403/nodejs-argocd-svc
+  newTag: latest
 
 patches:
 - target:
