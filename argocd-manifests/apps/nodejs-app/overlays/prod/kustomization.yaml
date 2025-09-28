@@ -61,7 +61,7 @@ secretGenerator:
 # Image overrides for production environment with security features
 images:
 - name: ghcr.io/azhe403/nodejs-argocd-svc
-  newTag: v1.0.0
+  newTag: latest
   digest: ""  # Use specific digest for production: sha256:...
 
 # Production-grade resource limits and requests

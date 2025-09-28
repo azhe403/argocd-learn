@@ -39,7 +39,7 @@ configMapGenerator:
 
 # Image overrides for dev environment
 images:
-- name: ghcr.io/azhe403/golang-argocd
+- name: ghcr.io/azhe403/golang-argocd-svc
   newTag: latest
 
 patches:
