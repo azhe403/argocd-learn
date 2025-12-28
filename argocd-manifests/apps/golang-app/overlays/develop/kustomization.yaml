@@ -1,0 +1,61 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+
+metadata:
+  name: golang-app-develop
+  annotations:
+    environment: development
+    config.kubernetes.io/local-config: "true"
+
+# Inherit from base
+resources:
+  - ../../base
+  - ingress.yaml
+
+# Common annotations for dev environment
+commonAnnotations:
+  app.kubernetes.io/environment: dev
+  environment.description: "Development environment for golang-app"
+
+# Name prefix for all resources
+namePrefix: develop-
+
+# Namespace for all resources
+namespace: argocd-learn
+
+# Patches for environment-specific configurations
+patches:
+  - path: replicas-patch.yaml
+  - target:
+      group: apps
+      version: v1
+      kind: Deployment
+      name: develop-golang-app
+    patch: |-
+      - op: add
+        path: /spec/template/spec/containers/0/resources
+        value:
+          requests:
+            cpu: 100m
+            memory: 128Mi
+          limits:
+            cpu: 200m
+            memory: 256Mi
+      - op: add
+        path: /spec/template/spec/containers/0/envFrom
+        value:
+        - configMapRef:
+            name: develop-golang-app-develop-config
+# Environment-specific ConfigMap generator
+configMapGenerator:
+  - name: golang-app-config
+    behavior: merge
+    literals:
+      - ENVIRONMENT=development
+      - LOG_LEVEL=debug
+      - DEBUG_MODE=true
+
+# Image overrides for dev environment
+images:
+  - name: ghcr.io/azhe403/golang-argocd-svc
+    newTag: latest

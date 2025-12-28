@@ -2,7 +2,7 @@ apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
   name: root-application
-  namespace: argocd-learn
+  namespace: argocd
   finalizers:
     - resources-finalizer.argocd.argoproj.io
 spec:
@@ -12,10 +12,11 @@ spec:
     targetRevision: HEAD
     path: argocd-manifests/apps
     directory:
-      include: '*.yaml'
+      include: "*.yaml"
+      recurse: true
   destination:
     server: https://kubernetes.default.svc
-    namespace: argocd-learn
+    namespace: argocd
   syncPolicy:
     automated:
       prune: true

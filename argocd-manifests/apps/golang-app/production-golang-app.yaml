@@ -1,20 +1,20 @@
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: nodejs-app-dev
-  namespace: argocd-learn
+  name: production-golang-app
+  namespace: argocd
   finalizers:
     - resources-finalizer.argocd.argoproj.io
   labels:
-    app.kubernetes.io/name: nodejs-app
-    app.kubernetes.io/instance: nodejs-app
+    app.kubernetes.io/name: golang-app
+    app.kubernetes.io/instance: production-golang-app
     app.kubernetes.io/part-of: argocd-learn
 spec:
   project: default
   source:
     repoURL: https://github.com/azhe403/argocd-learn.git
     targetRevision: HEAD
-    path: argocd-manifests/apps/nodejs-app/overlays/dev
+    path: argocd-manifests/apps/golang-app/overlays/production
     kustomize: {}
   destination:
     server: https://kubernetes.default.svc
@@ -31,7 +31,7 @@ spec:
   ignoreDifferences:
     - group: apps
       kind: Deployment
-      name: dev-nodejs-app
+      name: production-golang-app
       namespace: argocd-learn
       jsonPointers:
         - /spec/replicas

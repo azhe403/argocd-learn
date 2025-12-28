@@ -5,20 +5,21 @@ metadata:
   namespace: argocd
   annotations:
     nginx.ingress.kubernetes.io/backend-protocol: "HTTPS"
+    cert-manager.io/cluster-issuer: "argocd-learn-ca-issuer"
 spec:
   ingressClassName: nginx
   rules:
-  - host: argocd.local
-    http:
-      paths:
-      - path: /
-        pathType: Prefix
-        backend:
-          service:
-            name: argocd-server
-            port:
-              number: 80
+    - host: argocd.argocd-learn.local
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: argocd-server
+                port:
+                  number: 443
   tls:
-  - hosts:
-    - argocd.local
-    secretName: argocd-server-tls
+    - hosts:
+        - argocd.argocd-learn.local
+      secretName: argocd-server-tls
