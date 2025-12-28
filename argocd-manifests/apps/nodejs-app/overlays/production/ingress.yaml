@@ -10,11 +10,11 @@ spec:
   ingressClassName: nginx
   tls:
     - hosts:
-        - "prod-nodejs.argocd-learn.local"
+        - "nodejs.argocd-learn.local"
         - "*.argocd-learn.local"
       secretName: production-nodejs-tls
   rules:
-    - host: prod-nodejs.argocd-learn.local
+    - host: nodejs.argocd-learn.local
       http:
         paths:
           - path: /
