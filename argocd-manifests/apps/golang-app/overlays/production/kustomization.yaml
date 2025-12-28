@@ -9,6 +9,9 @@ metadata:
     security.scan/date: "$(date +%Y-%m-%d)"
     security.compliance: "required"
 
+generatorOptions:
+  disableNameSuffixHash: true
+
 # Inherit from base
 resources:
   - ../../base
@@ -32,7 +35,7 @@ commonAnnotations:
 namePrefix: production-
 
 # Namespace for all resources
-namespace: argocd-learn-prod
+namespace: argocd-learn
 
 # Patches for environment-specific configurations
 patches:
@@ -95,9 +98,9 @@ patchesJson6902:
         path: /spec/template/spec/containers/0/envFrom
         value:
         - configMapRef:
-            name: prod-golang-app-prod-config
+            name: production-golang-app-config
         - secretRef:
-            name: prod-golang-app-prod-secrets
+            name: production-golang-app-prod-secrets
       - op: add
         path: /spec/template/spec/containers/0/livenessProbe
         value:

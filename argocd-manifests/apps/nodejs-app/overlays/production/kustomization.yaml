@@ -9,6 +9,9 @@ metadata:
     security.scan/date: "$(date +%Y-%m-%d)"
     security.compliance: "required"
 
+generatorOptions:
+  disableNameSuffixHash: true
+
 # Common labels for all resources in production
 commonLabels:
   environment: production
@@ -95,9 +98,9 @@ patchesJson6902:
         path: /spec/template/spec/containers/0/envFrom
         value:
         - configMapRef:
-            name: prod-nodejs-app-prod-config
+            name: production-nodejs-app-config
         - secretRef:
-            name: prod-nodejs-app-prod-secrets
+            name: production-nodejs-app-prod-secrets
       - op: add
         path: /spec/template/spec/containers/0/livenessProbe
         value:
