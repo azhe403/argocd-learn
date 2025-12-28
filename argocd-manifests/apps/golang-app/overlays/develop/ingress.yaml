@@ -9,17 +9,17 @@ spec:
   ingressClassName: nginx
   tls:
     - hosts:
-        - 'dev-golang.argocd-learn.local'
-        - '*.argocd-learn.local'
+        - "dev-golang.argocd-learn.local"
+        - "*.argocd-learn.local"
       secretName: local-tls
   rules:
-  - host: dev-golang.argocd-learn.local
-    http:
-      paths:
-      - path: /
-        pathType: Prefix
-        backend:
-          service:
-            name: dev-golang-app
-            port:
-              number: 80
+    - host: dev-golang.argocd-learn.local
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: develop-golang-app
+                port:
+                  number: 80
