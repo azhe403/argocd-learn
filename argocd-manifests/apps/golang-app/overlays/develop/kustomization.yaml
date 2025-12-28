@@ -23,29 +23,11 @@ namePrefix: develop-
 # Namespace for all resources
 namespace: argocd-learn
 
-# Patches for environment-specific configurations
-patches:
-  - path: replicas-patch.yaml
-  - target:
-      group: apps
-      version: v1
-      kind: Deployment
-      name: develop-golang-app
-    patch: |-
-      - op: add
-        path: /spec/template/spec/containers/0/resources
-        value:
-          requests:
-            cpu: 100m
-            memory: 128Mi
-          limits:
-            cpu: 200m
-            memory: 256Mi
-      - op: add
-        path: /spec/template/spec/containers/0/envFrom
-        value:
-        - configMapRef:
-            name: develop-golang-app-develop-config
+# Replicas override
+replicas:
+  - name: golang-app
+    count: 3
+
 # Environment-specific ConfigMap generator
 configMapGenerator:
   - name: golang-app-config
@@ -54,6 +36,15 @@ configMapGenerator:
       - ENVIRONMENT=development
       - LOG_LEVEL=debug
       - DEBUG_MODE=true
+      - NODE_ENV=development
+
+# Development secrets
+secretGenerator:
+  - name: golang-app-secrets
+    behavior: create
+    literals:
+      - jwt-secret=dev-secret-key
+    type: Opaque
 
 # Image overrides for dev environment
 images:

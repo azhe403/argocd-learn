@@ -2,26 +2,25 @@ apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
   name: nodejs-app-ingress
-  namespace: argocd-learn
   annotations:
-    cert-manager.io/issuer: "local-ca-issuer"
+    cert-manager.io/cluster-issuer: "argocd-learn-ca-issuer"
     nginx.ingress.kubernetes.io/force-ssl-redirect: "true"
     nginx.ingress.kubernetes.io/ssl-redirect: "true"
 spec:
   ingressClassName: nginx
   tls:
     - hosts:
-        - 'nodejs.argocd-learn.local'
-        - '*.argocd-learn.local'
-      secretName: local-tls
+        - "prod-nodejs.argocd-learn.local"
+        - "*.argocd-learn.local"
+      secretName: production-nodejs-tls
   rules:
-  - host: nodejs.argocd-learn.local
-    http:
-      paths:
-      - path: /
-        pathType: Prefix
-        backend:
-          service:
-            name: prod-nodejs-app
-            port:
-              number: 80
+    - host: prod-nodejs.argocd-learn.local
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: production-nodejs-app
+                port:
+                  number: 80

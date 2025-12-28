@@ -23,9 +23,10 @@ resources:
   - ../../base
   - ingress.yaml
 
-# Patches for environment-specific configurations
-patches:
-  - path: replicas-patch.yaml
+# Replicas override
+replicas:
+  - name: nodejs-app
+    count: 3
 
 # Environment-specific ConfigMap generator
 configMapGenerator:
@@ -36,6 +37,14 @@ configMapGenerator:
       - LOG_LEVEL=debug
       - DEBUG_MODE=true
       - NODE_ENV=development
+
+# Development secrets
+secretGenerator:
+  - name: nodejs-app-secrets
+    behavior: create
+    literals:
+      - session-secret=dev-secret-key
+    type: Opaque
 
 # Image overrides for dev environment
 images:

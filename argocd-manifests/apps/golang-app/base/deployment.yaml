@@ -11,8 +11,6 @@ spec:
       labels:
         app: golang-app
     spec:
-      imagePullSecrets:
-        - name: ghcr-secret
       containers:
         - name: golang-app
           image: ghcr.io/azhe403/golang-argocd-svc:latest
@@ -26,3 +24,8 @@ spec:
             limits:
               cpu: 200m
               memory: 256Mi
+          envFrom:
+            - configMapRef:
+                name: golang-app-config
+            - secretRef:
+                name: golang-app-secrets
