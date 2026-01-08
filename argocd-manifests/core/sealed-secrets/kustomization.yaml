@@ -1,0 +1,7 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+
+# The official manifest puts the controller in exactly the right place (kube-system)
+# and sets up all necessary RBAC and Services.
+resources:
+  - https://github.com/bitnami-labs/sealed-secrets/releases/download/v0.34.0/controller.yaml

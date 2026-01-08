@@ -18,6 +18,7 @@ resources:
 - clusterissuer/selfsigned-issuer.yaml
 - issuer/local-ca-issuer.yaml
 - argocd/ingress.yaml
+- sealed-secrets
 
 # Generate ConfigMap for core configuration
 configMapGenerator:
