@@ -3,14 +3,14 @@ kind: Ingress
 metadata:
   name: golang-app-ingress
   annotations:
-    cert-manager.io/cluster-issuer: "local-ca-issuer"
+    cert-manager.io/cluster-issuer: "argocd-learn-ca-issuer"
     nginx.ingress.kubernetes.io/force-ssl-redirect: "true"
 spec:
   ingressClassName: nginx
   tls:
     - hosts:
         - "dev-golang-app.argocd-learn.azhe.my.id"
-      secretName: local-tls
+      secretName: develop-golang-tls
   rules:
     - host: dev-golang-app.argocd-learn.azhe.my.id
       http:
