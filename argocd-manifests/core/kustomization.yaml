@@ -16,6 +16,8 @@ namespace: argocd-learn
 # Include all core infrastructure resources
 resources:
 - clusterissuer/selfsigned-issuer.yaml
+- clusterissuer/ca-certificate.yaml
+- clusterissuer/ca-issuer.yaml
 - issuer/local-ca-issuer.yaml
 - argocd/ingress.yaml
 - sealed-secrets

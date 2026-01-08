@@ -13,7 +13,7 @@ metadata:
     app.kubernetes.io/instance: production-golang-app
     app.kubernetes.io/part-of: argocd-learn
 spec:
-  project: default
+  project: applications
   source:
     repoURL: https://github.com/azhe403/argocd-learn.git
     targetRevision: HEAD
@@ -30,6 +30,7 @@ spec:
       - CreateNamespace=true
       - ServerSideApply=true
       - ApplyOutOfSyncOnly=true
+      - RespectIgnoreDifferences=true
   ignoreDifferences:
     - group: apps
       kind: Deployment

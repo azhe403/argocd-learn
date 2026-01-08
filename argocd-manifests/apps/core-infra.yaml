@@ -9,7 +9,7 @@ metadata:
     app.kubernetes.io/name: core-infra
     app.kubernetes.io/part-of: argocd-learn
 spec:
-  project: default
+  project: infrastructure
   source:
     repoURL: https://github.com/azhe403/argocd-learn.git
     targetRevision: HEAD
@@ -26,3 +26,4 @@ spec:
       - CreateNamespace=true
       - ServerSideApply=true
       - ApplyOutOfSyncOnly=true
+      - RespectIgnoreDifferences=true
