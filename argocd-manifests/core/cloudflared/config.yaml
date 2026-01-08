@@ -1,0 +1,18 @@
+tunnel: cloudflared
+credentials-file: /etc/cloudflared/creds/token
+metrics: 0.0.0.0:2000
+no-autoupdate: true
+ingress:
+  - hostname: argo-opt-5050-01.azhe.my.id
+    service: https://argocd-server.argocd.svc.cluster.local:443
+    originRequest:
+      noTLSVerify: true
+  - hostname: dev-golang-app.argocd-learn.azhe.my.id
+    service: http://develop-golang-app.argocd-learn.svc.cluster.local:80
+  - hostname: dev-nodejs-app.argocd-learn.azhe.my.id
+    service: http://develop-nodejs-app.argocd-learn.svc.cluster.local:80
+  - hostname: golang-app.argocd-learn.azhe.my.id
+    service: http://production-golang-app.argocd-learn.svc.cluster.local:80
+  - hostname: nodejs-app.argocd-learn.azhe.my.id
+    service: http://production-nodejs-app.argocd-learn.svc.cluster.local:80
+  - service: http_status:404

@@ -31,7 +31,8 @@ spec:
           runAsNonRoot: true
         args:
         - tunnel
-        - --no-autoupdate
+        - --config
+        - /etc/cloudflared/config/config.yaml
         - run
         - --token
         - $(TOKEN)
@@ -60,6 +61,10 @@ spec:
           limits:
             cpu: 200m
             memory: 256Mi
+        volumeMounts:
+        - name: config
+          mountPath: /etc/cloudflared/config
+          readOnly: true
       affinity:
         podAntiAffinity:
           preferredDuringSchedulingIgnoredDuringExecution:
@@ -72,6 +77,10 @@ spec:
                   values:
                   - cloudflared
               topologyKey: "kubernetes.io/hostname"
+      volumes:
+      - name: config
+        configMap:
+          name: cloudflared-config
       terminationGracePeriodSeconds: 60
 
 

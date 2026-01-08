@@ -9,11 +9,10 @@ spec:
   ingressClassName: nginx
   tls:
     - hosts:
-        - "golang.argocd-learn.local"
-        - "*.argocd-learn.local"
+        - "golang-app.argocd-learn.azhe.my.id"
       secretName: production-golang-tls
   rules:
-    - host: golang.argocd-learn.local
+    - host: golang-app.argocd-learn.azhe.my.id
       http:
         paths:
           - path: /

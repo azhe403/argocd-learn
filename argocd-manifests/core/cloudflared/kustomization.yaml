@@ -4,4 +4,8 @@ kind: Kustomization
 resources:
   - namespace.yaml
   - deployment.yaml
-  # - configmap.yaml # Commented out for now as the token method is simpler for existing setups
+
+configMapGenerator:
+  - name: cloudflared-config
+    files:
+      - config.yaml
