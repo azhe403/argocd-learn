@@ -3,6 +3,9 @@ kind: Application
 metadata:
   name: develop-golang-app
   namespace: argocd
+  annotations:
+    argocd-image-updater.argoproj.io/image-list: app=ghcr.io/azhe403/golang-argocd-svc
+    argocd-image-updater.argoproj.io/app.update-strategy: latest
   finalizers:
     - resources-finalizer.argocd.argoproj.io
   labels:

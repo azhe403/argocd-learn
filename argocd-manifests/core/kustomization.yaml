@@ -19,6 +19,7 @@ resources:
 - issuer/local-ca-issuer.yaml
 - argocd/ingress.yaml
 - sealed-secrets
+- argocd-image-updater
 
 # Generate ConfigMap for core configuration
 configMapGenerator:
