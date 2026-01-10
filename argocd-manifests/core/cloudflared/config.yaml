@@ -3,7 +3,7 @@ credentials-file: /etc/cloudflared/creds/token
 metrics: 0.0.0.0:2000
 no-autoupdate: true
 ingress:
-  - hostname: argo-opt-5050-01.azhe.my.id
+  - hostname: argocd.opt-5050-01.azhe.my.id
     service: https://argocd-server.argocd.svc.cluster.local:443
     originRequest:
       noTLSVerify: true
