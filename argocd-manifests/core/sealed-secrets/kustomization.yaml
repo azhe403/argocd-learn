@@ -5,3 +5,15 @@ kind: Kustomization
 # and sets up all necessary RBAC and Services.
 resources:
   - https://github.com/bitnami-labs/sealed-secrets/releases/download/v0.34.0/controller.yaml
+
+# Patches to fix RBAC permissions
+patches:
+  - path: role-patch.yaml
+    target:
+      kind: Role
+      name: sealed-secrets-key-admin
+      namespace: kube-system
+  - path: clusterrolebinding-patch.yaml
+    target:
+      kind: ClusterRoleBinding
+      name: sealed-secrets-controller
