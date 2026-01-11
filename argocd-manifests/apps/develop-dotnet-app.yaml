@@ -1,0 +1,41 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: develop-dotnet-app
+  namespace: argocd
+  annotations:
+    argocd-image-updater.argoproj.io/image-list: app=ghcr.io/azhe403/dotnet-argocd-svc
+    argocd-image-updater.argoproj.io/app.update-strategy: latest
+  finalizers:
+    - resources-finalizer.argocd.argoproj.io
+  labels:
+    app.kubernetes.io/name: dotnet-app
+    app.kubernetes.io/instance: develop-dotnet-app
+    app.kubernetes.io/part-of: argocd-learn
+spec:
+  project: applications
+  source:
+    repoURL: https://github.com/azhe403/argocd-learn.git
+    targetRevision: HEAD
+    path: argocd-manifests/apps/dotnet-app/overlays/develop
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: argocd-learn
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+      allowEmpty: false
+    syncOptions:
+      - CreateNamespace=true
+      - ServerSideApply=true
+      - ApplyOutOfSyncOnly=true
+      - RespectIgnoreDifferences=true
+  ignoreDifferences:
+    - group: apps
+      kind: Deployment
+      name: develop-dotnet-app
+      namespace: argocd-learn
+      jsonPointers:
+        - /spec/replicas
+        - /spec/template/spec/containers/0/image

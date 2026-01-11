@@ -1,0 +1,57 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+
+metadata:
+  name: dotnet-app-production
+  annotations:
+    environment: production
+    config.kubernetes.io/local-config: "true"
+
+generatorOptions:
+  disableNameSuffixHash: true
+
+# Inherit from base
+resources:
+  - ../../base
+  - ingress.yaml
+
+# Common annotations for production environment
+commonAnnotations:
+  app.kubernetes.io/environment: production
+  environment.description: "Production environment for dotnet-app"
+
+# Name prefix for all resources
+namePrefix: production-
+
+# Namespace for all resources
+namespace: argocd-learn
+
+# Replicas override
+replicas:
+  - name: dotnet-app
+    count: 7
+
+# Production environment ConfigMap generator
+configMapGenerator:
+  - name: dotnet-app-config
+    behavior: merge
+    literals:
+      - ENVIRONMENT=production
+      - LOG_LEVEL=info
+      - DEBUG_MODE=false
+      - ASPNETCORE_ENVIRONMENT=Production
+
+# Secret generator for production secrets
+secretGenerator:
+  - name: dotnet-app-secrets
+    behavior: create
+    literals:
+      - database-url=postgresql://prod-user:prod-password@prod-db:5432/dotnet_app
+      - redis-url=redis://prod-redis:6379
+      - jwt-secret=prod-secret-key
+    type: Opaque
+
+# Image overrides for production environment
+images:
+  - name: ghcr.io/azhe403/dotnet-argocd-svc
+    newTag: latest

@@ -1,0 +1,52 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+
+metadata:
+  name: dotnet-app-develop
+  annotations:
+    environment: development
+    config.kubernetes.io/local-config: "true"
+
+# Inherit from base
+resources:
+  - ../../base
+  - ingress.yaml
+
+# Common annotations for dev environment
+commonAnnotations:
+  app.kubernetes.io/environment: dev
+  environment.description: "Development environment for dotnet-app"
+
+# Name prefix for all resources
+namePrefix: develop-
+
+# Namespace for all resources
+namespace: argocd-learn
+
+# Replicas override
+replicas:
+  - name: dotnet-app
+    count: 3
+
+# Environment-specific ConfigMap generator
+configMapGenerator:
+  - name: dotnet-app-config
+    behavior: merge
+    literals:
+      - ENVIRONMENT=development
+      - LOG_LEVEL=debug
+      - DEBUG_MODE=true
+      - ASPNETCORE_ENVIRONMENT=Development
+
+# Development secrets
+secretGenerator:
+  - name: dotnet-app-secrets
+    behavior: create
+    literals:
+      - jwt-secret=dev-secret-key
+    type: Opaque
+
+# Image overrides for dev environment
+images:
+  - name: ghcr.io/azhe403/dotnet-argocd-svc
+    newTag: latest
