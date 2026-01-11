@@ -1,2 +1,15 @@
 node_modules
 *.secret.yaml
+
+# .NET build artifacts
+**/bin/
+**/obj/
+**/*.user
+**/*.suo
+**/*.cache
+**/*.dll
+**/*.exe
+**/*.pdb
+**/*.deps.json
+**/*.runtimeconfig.json
+**/*.staticwebassets.endpoints.json
