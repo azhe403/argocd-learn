@@ -7,6 +7,10 @@ ingress:
     service: https://argocd-server.argocd.svc.cluster.local:443
     originRequest:
       noTLSVerify: true
+  - hostname: portainer.argocd-learn.azhe.my.id
+    service: https://portainer.portainer.svc.cluster.local:9443
+    originRequest:
+      noTLSVerify: true
   - hostname: dev-golang-app.argocd-learn.azhe.my.id
     service: http://develop-golang-app.argocd-learn.svc.cluster.local:80
   - hostname: dev-nodejs-app.argocd-learn.azhe.my.id
