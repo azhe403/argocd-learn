@@ -8,10 +8,12 @@ metadata:
 spec:
   description: Business Applications
   sourceRepos:
-    - '*'
+    - "*"
   destinations:
-    - namespace: 'argocd-learn'
+    - namespace: "argocd-learn"
+      server: https://kubernetes.default.svc
+    - namespace: "keycloak-*"
       server: https://kubernetes.default.svc
   namespaceResourceWhitelist:
-    - group: '*'
-      kind: '*'
+    - group: "*"
+      kind: "*"
