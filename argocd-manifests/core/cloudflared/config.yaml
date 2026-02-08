@@ -19,4 +19,10 @@ ingress:
     service: http://production-golang-app.argocd-learn.svc.cluster.local:80
   - hostname: nodejs-app.argocd-learn.azhe.my.id
     service: http://production-nodejs-app.argocd-learn.svc.cluster.local:80
+  - hostname: dev-auth.corp.azhe.my.id
+    service: http://keycloak.keycloak-dev.svc.cluster.local:80
+  - hostname: stg-auth.corp.azhe.my.id
+    service: http://keycloak.keycloak-stg.svc.cluster.local:80
+  - hostname: auth.corp.azhe.my.id
+    service: http://keycloak.keycloak-prod.svc.cluster.local:80
   - service: http_status:404
