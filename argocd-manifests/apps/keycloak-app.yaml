@@ -1,23 +1,23 @@
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: production-keycloak-app
+  name: keycloak-app
   namespace: argocd
   finalizers:
     - resources-finalizer.argocd.argoproj.io
   labels:
     app.kubernetes.io/name: keycloak-app
-    app.kubernetes.io/instance: production-keycloak-app
+    app.kubernetes.io/instance: keycloak-app
     app.kubernetes.io/part-of: argocd-learn
 spec:
   project: applications
   source:
     repoURL: https://github.com/azhe403/argocd-learn.git
     targetRevision: HEAD
-    path: argocd-manifests/apps/keycloak-app/overlays/production
+    path: argocd-manifests/apps/keycloak-app/base
   destination:
     server: https://kubernetes.default.svc
-    namespace: keycloak-prod
+    namespace: keycloak
   syncPolicy:
     automated:
       prune: true
