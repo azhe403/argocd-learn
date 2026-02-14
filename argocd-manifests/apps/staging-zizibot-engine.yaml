@@ -24,10 +24,4 @@ spec:
     - CreateNamespace=true
     - PrunePropagationPolicy=foreground
     - PruneLast=true
-  retry:
-    limit: 3
-    backoff:
-      duration: 5s
-      factor: 2
-      maxDuration: 3m
   revisionHistoryLimit: 3

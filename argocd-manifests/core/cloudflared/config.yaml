@@ -11,6 +11,8 @@ ingress:
     service: https://portainer.portainer.svc.cluster.local:9443
     originRequest:
       noTLSVerify: true
+  - hostname: dev-dotnet-app.argocd-learn.azhe.my.id
+    service: http://develop-dotnet-app.argocd-learn.svc.cluster.local:80
   - hostname: dev-golang-app.argocd-learn.azhe.my.id
     service: http://develop-golang-app.argocd-learn.svc.cluster.local:80
   - hostname: dev-nodejs-app.argocd-learn.azhe.my.id
