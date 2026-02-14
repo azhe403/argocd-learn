@@ -1,0 +1,24 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: zizibot-engine
+  annotations:
+    kubernetes.io/ingress.class: "nginx"
+    cert-manager.io/cluster-issuer: "letsencrypt-prod"
+    nginx.ingress.kubernetes.io/rewrite-target: /
+spec:
+  tls:
+  - hosts:
+    - stg-engine.zizibot.opt-01.azhe.my.id
+    secretName: zizibot-engine-tls
+  rules:
+  - host: stg-engine.zizibot.opt-01.azhe.my.id
+    http:
+      paths:
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: zizibot-engine
+            port:
+              number: 80

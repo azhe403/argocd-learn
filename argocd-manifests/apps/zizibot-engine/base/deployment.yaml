@@ -1,0 +1,50 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: zizibot-engine
+spec:
+  selector:
+    matchLabels:
+      app: zizibot-engine
+  template:
+    metadata:
+      labels:
+        app: zizibot-engine
+    spec:
+      containers:
+        - name: zizibot-engine
+          image: ghcr.io/azhe403/zizibot-engine:latest
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 7120
+          livenessProbe:
+            httpGet:
+              path: /health
+              port: 7120
+            initialDelaySeconds: 5
+            periodSeconds: 10
+          readinessProbe:
+            httpGet:
+              path: /ready
+              port: 7120
+            initialDelaySeconds: 2
+            periodSeconds: 5
+          securityContext:
+            allowPrivilegeEscalation: false
+            runAsNonRoot: true
+            runAsUser: 1000
+            capabilities:
+              drop:
+                - ALL
+          resources:
+            requests:
+              cpu: 100m
+              memory: 128Mi
+            limits:
+              cpu: 500m
+              memory: 512Mi
+          envFrom:
+            - configMapRef:
+                name: zizibot-engine-config
+            - secretRef:
+                name: zizibot-engine-secrets

@@ -1,0 +1,48 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+
+metadata:
+  name: zizibot-engine-staging
+  annotations:
+    config.kubernetes.io/local-config: "true"
+
+# Reference to base configuration
+resources:
+- ../../base
+
+# Common annotations for staging environment
+commonAnnotations:
+  app.kubernetes.io/environment: "staging"
+  app.kubernetes.io/managed-by: "argocd"
+
+namespace: zizibot-engine
+
+# Override ConfigMap values for staging
+configMapGenerator:
+- name: zizibot-engine-config
+  behavior: merge
+  literals:
+    - ENVIRONMENT=staging
+    - LOG_LEVEL=debug
+    - API_URL=https://staging-api.example.com
+    - CONNECTION_STRING=your-connection-string-here
+
+# Override Secret values for staging
+secretGenerator:
+- name: zizibot-engine-secrets
+  behavior: merge
+  literals:
+    - SECRET_KEY=staging-secret-key-change-me
+
+# Resource patches for staging environment
+patches:
+- path: deployment-patch.yaml
+- target:
+    kind: Ingress
+    name: zizibot-engine
+  path: ingress.yaml
+
+# Images configuration for staging
+images:
+- name: ghcr.io/azhe403/zizibot-engine
+  newTag: latest

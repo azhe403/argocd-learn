@@ -1,0 +1,27 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: zizibot-engine
+spec:
+  selector:
+    matchLabels:
+      app: zizibot-engine
+  replicas: 3
+  template:
+    spec:
+      containers:
+        - name: zizibot-engine
+          resources:
+            requests:
+              cpu: 50m
+              memory: 64Mi
+            limits:
+              cpu: 200m
+              memory: 256Mi
+          env:
+            - name: ENVIRONMENT
+              value: "staging"
+            - name: DEBUG_MODE
+              value: "true"
+            - name: CONNECTION_STRING
+              value: "your-connection-string-here"

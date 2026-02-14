@@ -1,0 +1,33 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: staging-zizibot-engine
+  namespace: argocd
+  labels:
+    app.kubernetes.io/name: staging-zizibot-engine
+    app.kubernetes.io/component: application
+    app.kubernetes.io/part-of: zizibot-engine
+spec:
+  project: applications
+  source:
+    repoURL: https://github.com/azhe403/argocd-learn.git
+    targetRevision: HEAD
+    path: argocd-manifests/apps/zizibot-engine/overlays/staging
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: zizibot-engine
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+    - CreateNamespace=true
+    - PrunePropagationPolicy=foreground
+    - PruneLast=true
+  retry:
+    limit: 3
+    backoff:
+      duration: 5s
+      factor: 2
+      maxDuration: 3m
+  revisionHistoryLimit: 3
