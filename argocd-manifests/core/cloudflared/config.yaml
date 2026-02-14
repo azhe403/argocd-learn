@@ -23,6 +23,8 @@ ingress:
     service: http://keycloak.keycloak-dev.svc.cluster.local:80
   - hostname: stg-auth.corp.azhe.my.id
     service: http://keycloak.keycloak-stg.svc.cluster.local:80
+  - hostname: vault.argocd-learn.azhe.my.id
+    service: http://vault.vault.svc.cluster.local:8200
   - hostname: auth.corp.azhe.my.id
     service: http://keycloak.keycloak-prod.svc.cluster.local:80
   - service: http_status:404
