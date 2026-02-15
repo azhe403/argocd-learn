@@ -29,7 +29,7 @@ namespace: argocd-learn
 # Replicas override
 replicas:
   - name: nodejs-app
-    count: 7
+    count: 5
 
 # Production environment ConfigMap generator
 configMapGenerator:
